@@ -6,7 +6,9 @@
           type="checkbox"
           class="form-check-input"
           :id="properties.id"
+          v-model="ischecked"
         />
+       <slot></slot>
     </div>
 </template>
 
@@ -14,11 +16,21 @@
 export default {
     // default value, v-modeling & validators
     name: 'inputCheckBox',
+    data () {
+      return {
+        ischecked:null
+      }
+    },
     props: {
       properties: {
          id: String,
         label: String
+      },
+       methods: {
+      close() {
+        this.$emit("close")
       }
+    }
        
     }
 };

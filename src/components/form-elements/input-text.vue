@@ -2,12 +2,14 @@
   <div class="mb-3">
     
     <label :for="properties.id" class="form-label">{{ properties.label }}</label>
-    <button type="button" class="btn btn-close" aria-label="Close" @click="close"></button>
+   <slot></slot>
+    <div></div>
     <input
       type="text"
       class="form-control"
       :id="properties.id"
       :placeholder="properties.placeholder"
+      v-model="text"
     />
      
   </div>
@@ -17,6 +19,11 @@
 export default {
     // default value, v-modeling & validators
     name: 'inputText',
+    data () {
+      return {
+        text:null
+      }
+    },
     props: {
       properties: {
         id: String,
@@ -24,11 +31,7 @@ export default {
         label: String
       }
     },
-    methods: {
-      close() {
-        this.$emit("close")
-      }
-    }
+   
 };
 </script>
   
