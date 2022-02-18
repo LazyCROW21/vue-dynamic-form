@@ -24,18 +24,14 @@
   <hr />
   <div class="row">
     <div class="mb-3">
-      <draggable
-        class="dragArea list-group w-full"
-        :list="formElements"
-        @change="log"
-      >
-        <template v-for="(formElement,index) in formElements" :key="index">
+      <draggable class="dragArea list-group w-full" :list="formElements">
+        <template v-for="(formElement, index) in formElements" :key="index">
           <div class="position-relative">
-          <button class="rmv-btn btn-close" @click="remove(index)"></button>
-          <component
-            v-bind:is="formElement.component"
-            v-bind="formElement"
-          ></component>
+            <button class="rmv-btn btn-close" @click="remove(index)"></button>
+            <component
+              v-bind:is="formElement.component"
+              v-bind="formElement"
+            ></component>
           </div>
         </template>
       </draggable>
@@ -56,6 +52,7 @@ import inputText from "./form-elements/input-text.vue";
 import inputCheckBox from "./form-elements/input-checkbox.vue";
 import inputSelect from "./form-elements/input-select.vue";
 import addFieldModal from "./add-field-modal.vue";
+import { VueDraggableNext } from "vue-draggable-next";
 
 // left input-list, input-image, input-ouput mapping
 export default {
@@ -66,6 +63,7 @@ export default {
     "input-checkbox": inputCheckBox,
     "input-select": inputSelect,
     "add-field-modal": addFieldModal,
+    draggable: VueDraggableNext,
   },
   data() {
     return {
@@ -123,8 +121,8 @@ export default {
       this.formElements.push(event);
     },
     remove(index) {
-      this.formElements.splice(index,1)
-    }
+      this.formElements.splice(index, 1);
+    },
   },
 };
 </script>
@@ -132,9 +130,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .rmv-btn {
-    position: absolute;
-    top: 0;
-    right: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 </style>
 
