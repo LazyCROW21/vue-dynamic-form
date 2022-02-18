@@ -1,0 +1,35 @@
+[
+    {
+      "component": "input-text",
+      "properties": {
+        "id": "inptxt",
+        "placeholder": "ABC XYZ",
+        "label": "Enter your name"
+      }
+    },
+    {
+     "component": "input-checkbox",
+      "properties": {
+       "id": "inpcheckbox",
+        "label": "checkbox"
+      }
+    },
+    {
+     "component": "input-select",
+      "properties": {
+       "id": "inpselect",
+        "label": "Select",
+        "placeholder": "Select option",
+        "options": [
+          {
+           " value": "Hello",
+            "label": "Hello"
+          },
+          {
+            "value": "World",
+            "label": "World"
+          }
+        ]
+      }
+    }
+  ]

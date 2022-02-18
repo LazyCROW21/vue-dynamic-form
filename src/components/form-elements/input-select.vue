@@ -1,11 +1,11 @@
 <template>
   <div class="mb-3">
-    <label :for="id" class="form-label">{{ label }}</label>
+    <label :for="properties.id" class="form-label">{{ properties.label }}</label>
     <select
       class="form-control"
-      :id="id"
+      :id="properties.id"
     >
-      <option v-for="option in options" :key="option.value">{{ option.label }}</option>
+      <option v-for="option in properties.options" :key="option.value">{{ option.label }}</option>
     </select>
   </div>
 </template>
@@ -15,10 +15,13 @@ export default {
     // default value, v-modeling & validators
     name: 'inputSelect',
     props: {
+      properties: {
+        
         id: String,
         placeholder: String,
         label: String,
         options: Array
+      }
     }
 };
 </script>
