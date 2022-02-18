@@ -1,11 +1,25 @@
 <template>
   <h5>
-    {{ formtitle }}
-    <span class="float-end">
-      <button class="btn p-1" @click="editTitle">
-        <i class="bi bi-pencil-square"></i>
-      </button>
-    </span>
+    <template v-if="editTitleSwitch">
+      {{ formtitle }}
+      <span class="float-end">
+        <button class="btn p-1" @click="editTitle">
+          <i class="bi bi-pencil-square"></i>
+        </button>
+      </span>
+    </template>
+    <template v-else>
+      <div class="row">
+        <div class="col-11">
+          <input class="form-control" type="text" v-model="formtitle" />
+        </div>
+        <div class="col-1">
+          <button class="btn p-1 ms-2" @click="editTitle">
+            <i class="bi bi-save"></i>
+          </button>
+        </div>
+      </div>
+    </template>
   </h5>
   <hr />
   <div class="row">
@@ -18,11 +32,13 @@
       </template>
     </div>
     <div>
-      <button class="btn btn-primary float-end" @click="openAddFieldModal">Add New Field</button>
+      <button class="btn btn-primary float-end" @click="openAddFieldModal">
+        Add New Field
+      </button>
     </div>
   </div>
   <Teleport to="body">
-  <add-field-modal ref="afm" />
+    <add-field-modal ref="afm" @newField="addToForm" />
   </Teleport>
 </template>
 
@@ -40,12 +56,13 @@ export default {
     "input-text": inputText,
     "input-checkbox": inputCheckBox,
     "input-select": inputSelect,
-    "add-field-modal": addFieldModal
+    "add-field-modal": addFieldModal,
   },
   data() {
     return {
       // add ordering
       formtitle: "String",
+      editTitleSwitch: true,
       formElements: [
         {
           ordering: 1,
@@ -86,10 +103,16 @@ export default {
     };
   },
   methods: {
-    editTitle(){},
+    editTitle() {
+      this.editTitleSwitch = !this.editTitleSwitch;
+    },
     openAddFieldModal() {
       this.$refs["afm"].show();
     },
+    addToForm(event) {
+      console.log(event);
+      this.formElements.push(event);
+    }
   },
 };
 </script>

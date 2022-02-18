@@ -8,12 +8,10 @@
               <div class="modal-header">
                 <h4 class="modal-title">Add New Field</h4>
                 <button
-                  type="btn float-right"
-                  class="close"
+                  type="button"
+                  class="btn-close"
                   @click="myModel = false"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
+                ></button>
               </div>
               <div class="modal-body">
                 <div>Preview</div>
@@ -38,7 +36,7 @@
                   ref="createInput"
                 />
                 <hr />
-                <button type="button" class="btn btn-success" @click="addField">
+                <button type="button" class="btn btn-success float-end" @click="addField">
                   Save
                 </button>
               </div>
@@ -81,13 +79,18 @@ export default {
       this.myModel = false;
     },
     addField() {
-      console.log(this.$refs.createInput.getData());
+      // console.log(this.$refs.createInput.getData());
+      this.$emit('newField', this.$refs.createInput.getData());
     },
   }
 };
 </script>
 
 <style scoped>
+.modal-body {
+  max-height: 500px;
+  overflow-y: scroll;
+}
 .modal-mask {
   position: fixed;
   z-index: 9998;

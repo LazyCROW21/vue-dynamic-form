@@ -3,7 +3,6 @@
     <input
       type="text"
       class="form-control"
-      id="inpTxtplaceholder"
       placeholder="unique id"
       v-model="id"
     />
@@ -13,7 +12,6 @@
     <input
       type="text"
       class="form-control"
-      id="inpTxtLabel"
       placeholder="Label"
       v-model="label"
     />
@@ -23,7 +21,6 @@
     <input
       type="text"
       class="form-control"
-      id="inpTxtplaceholder"
       placeholder="Placeholder"
       v-model="placeholder"
     />
@@ -44,20 +41,23 @@ export default {
   },
   data() {
     return {
-      id: '',
-      label: '',
-      placeholder: ''
+      id: "",
+      label: "",
+      placeholder: "",
     };
   },
   methods: {
     getData() {
       return {
-        'id': this.id,
-        'label': this.label,
-        'placeholder': this.placeholder,
-      }
-    }
-  }
+        component: "input-text",
+        properties: {
+          id: this.id,
+          label: this.label,
+          placeholder: this.placeholder,
+        },
+      };
+    },
+  },
 };
 </script>
 
