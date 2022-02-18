@@ -29,11 +29,14 @@
         :list="formElements"
         @change="log"
       >
-        <template v-for="formElement in formElements" :key="formElement.id">
+        <template v-for="(formElement,index) in formElements" :key="index">
+          <div class="position-relative">
+          <button class="rmv-btn btn-close" @click="remove(index)"></button>
           <component
             v-bind:is="formElement.component"
             v-bind="formElement"
           ></component>
+          </div>
         </template>
       </draggable>
     </div>
@@ -119,11 +122,19 @@ export default {
       console.log(event);
       this.formElements.push(event);
     },
+    remove(index) {
+      this.formElements.splice(index,1)
+    }
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.rmv-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
 </style>
 
