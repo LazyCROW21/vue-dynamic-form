@@ -24,12 +24,18 @@
   <hr />
   <div class="row">
     <div class="mb-3">
-      <template v-for="formElement in formElements" :key="formElement.id">
-        <component
-          v-bind:is="formElement.component"
-          v-bind="formElement"
-        ></component>
-      </template>
+      <draggable
+        class="dragArea list-group w-full"
+        :list="formElements"
+        @change="log"
+      >
+        <template v-for="formElement in formElements" :key="formElement.id">
+          <component
+            v-bind:is="formElement.component"
+            v-bind="formElement"
+          ></component>
+        </template>
+      </draggable>
     </div>
     <div>
       <button class="btn btn-primary float-end" @click="openAddFieldModal">
@@ -112,7 +118,7 @@ export default {
     addToForm(event) {
       console.log(event);
       this.formElements.push(event);
-    }
+    },
   },
 };
 </script>
@@ -120,3 +126,4 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>
+
