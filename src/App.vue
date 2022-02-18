@@ -14,5 +14,7 @@ export default {
 </script>
 
 <style>
-
+#app {
+  position: relative;
+}
 </style>

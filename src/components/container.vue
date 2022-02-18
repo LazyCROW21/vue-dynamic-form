@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <h5>Create a form</h5>
+    <h4 class="mt-2">Create a form</h4>
     <hr>
-    <div class="row">
-      <form-builder formtitle="Amazing form" />
+    <div class="p-2 border rounded">
+      <form-builder/>
     </div>
   </div>
 </template>
