@@ -5,47 +5,48 @@
     }}</label>
     <input
       type="text"
-      class="form-control"
+      :class="getFormErrorClass()"
       :id="properties.id"
       :placeholder="properties.placeholder"
       :value="modelValue"
       @input="updateValue"
     />
-    <div v-if="v$.modelValue.$error">Name field has an error.</div>
+    <div v-if="errors && errors.length != 0" class="invalid-feedback">
+      <p class="mb-0" v-for="(err, i) in errors" :key="i">{{ err }}</p>
+    </div>
   </div>
 </template>
 
 <script>
-import useVuelidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
-
 export default {
   // default value, v-modeling & validators
   name: "inputText",
   props: {
     modelValue: String,
+    errors: Array,
     properties: {
       id: String,
       placeholder: String,
       label: String,
     },
   },
-  data() {
-    return { v$: useVuelidate(), name: "" };
-  },
+  // data() {
+  //   return { };
+  // },
   methods: {
+    getFormErrorClass() {
+      if(this.errors && this.errors.length != 0) {
+        return 'form-control is-invalid';
+      }
+      if(this.modelValue && this.modelValue.length > 0) {
+        return 'form-control is-valid';
+      }
+      return 'form-control';
+    },
     updateValue(event) {
-      this.v$.$validate();
-      console.log(this.modelValue);
-      console.log(this.v$.$error);
       this.$emit("update:modelValue", event.target.value);
     }
-  },
-  validations() {
-    return {
-      modelValue: { required },
-    };
-  },
+  }
 };
 </script>
 

@@ -82,6 +82,10 @@ export default {
           ordering: 1,
           component: "input-text",
           key: "name",
+          errors: [
+            'You are noob',
+            'You suck'
+          ],
           properties: {
             id: "inptxt",
             placeholder: "ABC XYZ",

@@ -5,14 +5,18 @@
     }}</label>
     <input
       type="number"
-      class="form-control"
+      :class="getFormErrorClass()"
       :id="properties.id"
       :placeholder="properties.placeholder"
       :min="properties.min"
       :max="properties.max"
       :step="properties.step"
-      @input="$emit('input', $event.target.value)"
+      :value="modelValue"
+      @input="updateValue"
     />
+    <div v-if="errors && errors.length != 0" class="invalid-feedback">
+      <p class="mb-0" v-for="(err, i) in errors" :key="i">{{ err }}</p>
+    </div>
   </div>
 </template>
 
@@ -21,6 +25,8 @@ export default {
   // default value, v-modeling & validators
   name: "inputNumber",
   props: {
+    modelValue: String,
+    errors: Array,
     properties: {
       id: String,
       placeholder: String,
@@ -28,6 +34,20 @@ export default {
       min: Number,
       max: Number,
       step: Number,
+    },
+  },
+  methods: {
+    getFormErrorClass() {
+      if (this.errors && this.errors.length != 0) {
+        return "form-control is-invalid";
+      }
+      if (this.modelValue && this.modelValue.length > 0) {
+        return "form-control is-valid";
+      }
+      return "form-control";
+    },
+    updateValue(event) {
+      this.$emit("update:modelValue", event.target.value);
     },
   },
 };
