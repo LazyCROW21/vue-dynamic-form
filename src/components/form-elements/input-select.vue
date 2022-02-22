@@ -4,6 +4,7 @@
     <select
       class="form-control"
       :id="properties.id"
+      @input="$emit('input', $event.target.value)"
     >
       <option v-if="properties.placeholder" value="placeholder" disabled selected>{{ properties.placeholder }}</option>
       <option v-for="option in properties.options" :key="option.value">{{ option.label }}</option>

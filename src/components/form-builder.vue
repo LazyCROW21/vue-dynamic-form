@@ -31,6 +31,7 @@
             <component
               v-bind:is="formElement.component"
               v-bind="formElement"
+              v-model="formModels[formElement.key]"
             ></component>
           </div>
         </template>
@@ -42,6 +43,7 @@
       </button>
     </div>
   </div>
+  <button @click="printData">Data</button>
   <Teleport to="body">
     <add-field-modal ref="afm" @newField="addToForm" />
   </Teleport>
@@ -70,10 +72,16 @@ export default {
       // add ordering
       formtitle: "String",
       editTitleSwitch: true,
+      formModels: {
+        name: null,
+        gender: null,
+        age: null
+      },
       formElements: [
         {
           ordering: 1,
           component: "input-text",
+          key: "name",
           properties: {
             id: "inptxt",
             placeholder: "ABC XYZ",
@@ -83,6 +91,7 @@ export default {
         {
           ordering: 2,
           component: "input-select",
+          key: "gender",
           properties: {
             id: "inpselect",
             placeholder: "M or F",
@@ -101,6 +110,7 @@ export default {
         },
         {
           component: "input-checkbox",
+          key: "age",
           properties: {
             id: "inpck",
             label: "Are you 18+",
@@ -123,6 +133,9 @@ export default {
     remove(index) {
       this.formElements.splice(index, 1);
     },
+    printData() {
+      console.log(this.formModels);
+    }
   },
 };
 </script>
