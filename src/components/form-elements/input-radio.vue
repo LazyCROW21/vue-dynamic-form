@@ -1,12 +1,15 @@
 <template>
-  <div class="form-check">
+  <p>{{ properties.label }}</p>
+  <div :class="computeFormClass()" v-for="(option, i) in options" :key="i">
     <input
       type="radio"
       class="form-check-input"
-      :name="name"
-      :id="id"
+      :name="properties.name"
+      :id="option.id"
+      :value="option.value"
+      @input="$emit('input', $event.target.value)"
     />
-    <label :for="id" class="form-check-label">{{ label }}</label>
+    <label :for="option.id" class="form-check-label">{{ option.label }}</label>
   </div>
 </template>
 
@@ -15,9 +18,21 @@ export default {
     // default value, v-modeling & validators
     name: 'inputRadio',
     props: {
+      properties: {
         id: String,
+        formCheckInline: Boolean,
         label: String,
-        name: String
+        name: String,
+        options: Array
+      }
+    },
+    methods: {
+      computeFormClass() {
+        if(this.properties.formCheckInline) {
+          return 'form-check form-check-inline';
+        }
+        return 'form-check';
+      }
     }
 };
 </script>

@@ -4,6 +4,7 @@
       type="checkbox"
       class="form-check-input"
       :id="properties.id"
+      @input="$emit('input', $event.target.value)"
     />
     <label :for="properties.id" class="form-check-label">{{ properties.label }}</label>
   </div>

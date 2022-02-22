@@ -5,6 +5,7 @@
       type="datetime-local"
       class="form-control"
       :id="id"
+      @input="$emit('input', $event.target.value)"
     />
   </div>
 </template>
