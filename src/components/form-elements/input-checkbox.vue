@@ -4,7 +4,7 @@
       type="checkbox"
       :class="getFormErrorClass()"
       :id="properties.id"
-      :value="modelValue"
+      :checked="modelValue"
       @input="updateValue"
     />
     <label :for="properties.id" class="form-check-label">{{
@@ -21,7 +21,7 @@ export default {
   // default value, v-modeling & validators
   name: "inputCheckBox",
   props: {
-    modelValue: String,
+    modelValue: Boolean,
     errors: Array,
     properties: {
       id: String,
@@ -39,7 +39,7 @@ export default {
       return "form-check-input";
     },
     updateValue(event) {
-      this.$emit("update:modelValue", event.target.value);
+      this.$emit("update:modelValue", event.target.checked);
     },
   },
 };
