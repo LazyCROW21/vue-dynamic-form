@@ -40,7 +40,9 @@
     <hr />
     <!-- Section View -->
     <div>
-      <form-section-builder />
+      <form-section-builder
+        :formElements="sections[seletedSelectionIndex].formElements"
+      />
     </div>
   </div>
 </template>
@@ -56,6 +58,7 @@ export default {
   },
   data() {
     return {
+      seletedSelectionIndex: 0,
       editSectionIdx: -1,
       sections: [
         {
@@ -106,7 +109,39 @@ export default {
         {
           sectionHeader: "XYZ",
           order: 1,
-          data: {},
+          formElements: [
+            {
+              ordering: 1,
+              component: "input-text",
+              key: "name",
+              errors: ["You are noob", "You suck"],
+              properties: {
+                id: "inptxt",
+                placeholder: "ABC XYZ",
+                label: "Enter your name",
+              },
+            },
+            {
+              ordering: 2,
+              component: "input-select",
+              key: "gender",
+              properties: {
+                id: "inpselect",
+                placeholder: "M or F",
+                label: "Select Gender",
+                options: [
+                  {
+                    value: "M",
+                    label: "Male",
+                  },
+                  {
+                    value: "F",
+                    label: "Female",
+                  },
+                ],
+              },
+            },
+          ],
         },
       ],
     };
@@ -116,7 +151,7 @@ export default {
       this.sections.push({
         sectionHeader: "New Section",
         order: this.sections.length,
-        data: {},
+        formElements: [],
       });
       this.editSectionIdx = this.sections.length - 1;
     },
@@ -136,6 +171,7 @@ export default {
       console.log(this.sections);
     },
     viewSection(idx) {
+      this.seletedSelectionIndex = idx;
       console.log("Viewing Section: ", idx);
     },
   },
