@@ -146,11 +146,14 @@ export default {
       this.formElements.splice(index, 1);
     },
     SubmitData() {
-      this.$router.push({ path: '/render' })
+      this.$router.push({ name: 'Render',params: {formTitle:this.sectionHeader} })
+      
+       console.log(JSON.stringify(this.formElements))
     }
   },
   mounted () {
     this.formElements = formData
+   
   }
 };
 </script>

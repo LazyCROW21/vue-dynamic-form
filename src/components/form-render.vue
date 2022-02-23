@@ -1,7 +1,7 @@
 <template>
   <div  class="row">
     <div class="mb-3">
-      <div><h1>Form</h1></div>
+      <div><h1>{{this.formTitle}}</h1></div>
         <template v-for="(formElement, index) in formElements" :key="index">
           <div class="position-relative">
             <component
@@ -40,7 +40,7 @@ export default {
     return {
       // add ordering
       
-    
+     formTitle: null,
       formElements:null
       
     };
@@ -58,6 +58,7 @@ export default {
   mounted() {
      
     this.formElements = formData
+    this.formTitle = this.$route.params.formTitle
   }
 };
 </script>
