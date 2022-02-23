@@ -24,13 +24,17 @@
   <hr />
   <div class="row">
     <div class="mb-3">
-      <draggable class="dragArea list-group w-full" :list="formElements">
+      <draggable class="dragArea list-group w-full" :list="formElements" >
         <template v-for="(formElement, index) in formElements" :key="index">
+        
           <div class="position-relative">
-            <button class="rmv-btn btn-close" @click="remove(index)"></button>
+            <br>
+             <i class="bi bi-grip-horizontal"></i>
+            <button class="rmv-btn btn-close" @click="remove(index)" ></button>
             <component
               v-bind:is="formElement.component"
               v-bind="formElement"
+              
             ></component>
           </div>
         </template>
@@ -41,7 +45,9 @@
         Add New Field
       </button>
     </div>
+    <button @click="submit">submit</button>
   </div>
+  
   <Teleport to="body">
     <add-field-modal ref="afm" @newField="addToForm" />
   </Teleport>
@@ -53,7 +59,7 @@ import inputCheckBox from "./form-elements/input-checkbox.vue";
 import inputSelect from "./form-elements/input-select.vue";
 import addFieldModal from "./add-field-modal.vue";
 import { VueDraggableNext } from "vue-draggable-next";
-
+import formData from '../form_data/form_Data'
 // left input-list, input-image, input-ouput mapping
 export default {
   name: "formbuilder",
@@ -70,43 +76,9 @@ export default {
       // add ordering
       formtitle: "String",
       editTitleSwitch: true,
-      formElements: [
-        {
-          ordering: 1,
-          component: "input-text",
-          properties: {
-            id: "inptxt",
-            placeholder: "ABC XYZ",
-            label: "Enter your name",
-          },
-        },
-        {
-          ordering: 2,
-          component: "input-select",
-          properties: {
-            id: "inpselect",
-            placeholder: "M or F",
-            label: "Select Gender",
-            options: [
-              {
-                value: "M",
-                label: "Male",
-              },
-              {
-                value: "F",
-                label: "Female",
-              },
-            ],
-          },
-        },
-        {
-          component: "input-checkbox",
-          properties: {
-            id: "inpck",
-            label: "Are you 18+",
-          },
-        },
-      ],
+      
+      formElements:null
+      
     };
   },
   methods: {
@@ -118,12 +90,23 @@ export default {
     },
     addToForm(event) {
       console.log(event);
+       
       this.formElements.push(event);
+     
     },
     remove(index) {
       this.formElements.splice(index, 1);
     },
+    submit() {
+      
+      this.$router.push({ path: '/render' })
+      console.log(JSON.stringify(this.formElements))
+    },
+    
   },
+  mounted() {
+    this.formElements = formData
+  }
 };
 </script>
 
@@ -134,5 +117,14 @@ export default {
   top: 0;
   right: 0;
 }
+.item {
+  cursor: all-scroll
+}
+.bi {
+  cursor: all-scroll;
+ display: flex;
+justify-content: center;
+}
+
 </style>
 

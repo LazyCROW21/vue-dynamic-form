@@ -43,6 +43,7 @@ export default {
         properties: {
           id: this.id,
           label: this.label,
+          isChecked:null
         },
       };
     },

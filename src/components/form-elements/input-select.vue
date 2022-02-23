@@ -4,6 +4,8 @@
     <select
       class="form-control"
       :id="properties.id"
+      :value="modelValue"
+       @change="$emit('update:modelValue', $event.target.value)"
     >
       <option v-if="properties.placeholder" value="placeholder" disabled selected>{{ properties.placeholder }}</option>
       <option v-for="option in properties.options" :key="option.value">{{ option.label }}</option>
@@ -21,7 +23,17 @@ export default {
         placeholder: String,
         label: String,
         options: Array
+      },
+      modelValue:{
+        type:String
       }
+    },
+    methods:{
+     
+      updateValue(value) {
+        this.$emit("input",value)
+      }
+    
     }
 };
 </script>

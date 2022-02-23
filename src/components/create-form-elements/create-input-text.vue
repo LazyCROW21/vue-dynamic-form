@@ -54,6 +54,7 @@ export default {
           id: this.id,
           label: this.label,
           placeholder: this.placeholder,
+          name:''
         },
       };
     },

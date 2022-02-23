@@ -3,13 +3,13 @@
     <h4 class="mt-2">Create a form</h4>
     <hr>
     <div class="p-2 border rounded">
-      <form-builder/>
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
-import formBuilder from './form-builder.vue';
+
 
 // left input-list, input-image, input-ouput mapping
 export default {
@@ -18,7 +18,7 @@ export default {
     // msg: String
   },
   components: {
-    'form-builder': formBuilder
+    
   },
   data() {
     return {

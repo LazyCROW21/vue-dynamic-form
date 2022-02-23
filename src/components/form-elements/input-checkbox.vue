@@ -4,6 +4,9 @@
       type="checkbox"
       class="form-check-input"
       :id="properties.id"
+      :checked="modelValue"
+      @change="$emit('update:modelValue', $event.target.checked)"
+      
     />
     <label :for="properties.id" class="form-check-label">{{ properties.label }}</label>
   </div>
@@ -17,7 +20,22 @@ export default {
       properties: {
         id: String,
         label: String
+      },
+       modelValue:{
+        type:Boolean
       }
+    },
+    // data(){
+    //   return {
+    //     hello:null
+    //   }
+    // },
+    methods:{
+     
+      updateValue(value) {
+        this.$emit("input",value)
+      }
+    
     }
 };
 </script>
