@@ -1,145 +1,143 @@
 <template>
-  <h5>
-    <template v-if="editTitleSwitch">
-      {{ formtitle }}
-      <span class="float-end">
-        <button class="btn p-1" @click="editTitle">
-          <i class="bi bi-pencil-square"></i>
-        </button>
-      </span>
-    </template>
-    <template v-else>
-      <div class="row">
-        <div class="col-11">
-          <input class="form-control" type="text" v-model="formtitle" />
-        </div>
-        <div class="col-1">
-          <button class="btn p-1 ms-2" @click="editTitle">
-            <i class="bi bi-save"></i>
-          </button>
-        </div>
-      </div>
-    </template>
-  </h5>
-  <hr />
-  <div class="row">
-    <div class="mb-3">
-      <draggable class="dragArea list-group w-full" :list="formElements">
-        <template v-for="(formElement, index) in formElements" :key="index">
-          <div class="position-relative">
-            <button class="rmv-btn btn-close" @click="remove(index)"></button>
-            <component
-              v-bind:is="formElement.component"
-              v-bind="formElement"
-              v-model="formModels[formElement.key]"
-            ></component>
-          </div>
-        </template>
-      </draggable>
-    </div>
+  <div>
+    <!-- Section Headers -->
     <div>
-      <button class="btn btn-primary float-end" @click="openAddFieldModal">
-        Add New Field
+      <div
+        v-for="(section, i) in sections"
+        :key="i"
+        class="d-inline p-2 m-1 bg-light"
+        @click="viewSection(i)"
+      >
+        <template v-if="editSectionIdx === i">
+          <input type="text" v-model="section.sectionHeader" />
+          <button
+            class="btn-success btn-sm p-1 ms-2"
+            @click="saveSectionHeader"
+          >
+            <i class="bi bi-check-square"></i>
+          </button>
+        </template>
+        <template v-else>
+          <span>{{ section.sectionHeader }}</span>
+          <button
+            class="btn btn-primary btn-sm ms-2 p-1 py-0"
+            @click="editSectionHeader(i)"
+          >
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button
+            class="btn btn-danger btn-sm ms-1 p-1 py-0"
+            @click="removeSection(section.sectionHeader)"
+          >
+            <i class="bi bi-trash"></i>
+          </button>
+        </template>
+      </div>
+      <button class="btn btn-success btn-sm p-1 py-0" @click="addSection">
+        <i class="bi bi-plus"></i>
       </button>
     </div>
+    <hr />
+    <!-- Section View -->
+    <div>
+      <form-section-builder />
+    </div>
   </div>
-  <button @click="printData">Data</button>
-  <Teleport to="body">
-    <add-field-modal ref="afm" @newField="addToForm" />
-  </Teleport>
 </template>
 
 <script>
-import inputText from "./form-elements/input-text.vue";
-import inputCheckBox from "./form-elements/input-checkbox.vue";
-import inputSelect from "./form-elements/input-select.vue";
-import addFieldModal from "./add-field-modal.vue";
-import { VueDraggableNext } from "vue-draggable-next";
+import formSectionBuilder from "./form-section-builder";
 
-// left input-list, input-image, input-ouput mapping
 export default {
   name: "formbuilder",
   props: {},
   components: {
-    "input-text": inputText,
-    "input-checkbox": inputCheckBox,
-    "input-select": inputSelect,
-    "add-field-modal": addFieldModal,
-    draggable: VueDraggableNext,
+    "form-section-builder": formSectionBuilder,
   },
   data() {
     return {
-      // add ordering
-      formtitle: "String",
-      editTitleSwitch: true,
-      formModels: {
-        name: null,
-        gender: null,
-        age: null
-      },
-      formElements: [
+      editSectionIdx: -1,
+      sections: [
         {
-          ordering: 1,
-          component: "input-text",
-          key: "name",
-          errors: [
-            'You are noob',
-            'You suck'
+          sectionHeader: "ABC",
+          order: 0,
+          formElements: [
+            {
+              ordering: 1,
+              component: "input-text",
+              key: "name",
+              errors: ["You are noob", "You suck"],
+              properties: {
+                id: "inptxt",
+                placeholder: "ABC XYZ",
+                label: "Enter your name",
+              },
+            },
+            {
+              ordering: 2,
+              component: "input-select",
+              key: "gender",
+              properties: {
+                id: "inpselect",
+                placeholder: "M or F",
+                label: "Select Gender",
+                options: [
+                  {
+                    value: "M",
+                    label: "Male",
+                  },
+                  {
+                    value: "F",
+                    label: "Female",
+                  },
+                ],
+              },
+            },
+            {
+              component: "input-checkbox",
+              key: "age",
+              properties: {
+                id: "inpck",
+                label: "Are you 18+",
+              },
+            },
           ],
-          properties: {
-            id: "inptxt",
-            placeholder: "ABC XYZ",
-            label: "Enter your name",
-          },
         },
         {
-          ordering: 2,
-          component: "input-select",
-          key: "gender",
-          properties: {
-            id: "inpselect",
-            placeholder: "M or F",
-            label: "Select Gender",
-            options: [
-              {
-                value: "M",
-                label: "Male",
-              },
-              {
-                value: "F",
-                label: "Female",
-              },
-            ],
-          },
-        },
-        {
-          component: "input-checkbox",
-          key: "age",
-          properties: {
-            id: "inpck",
-            label: "Are you 18+",
-          },
+          sectionHeader: "XYZ",
+          order: 1,
+          data: {},
         },
       ],
     };
   },
   methods: {
-    editTitle() {
-      this.editTitleSwitch = !this.editTitleSwitch;
+    addSection() {
+      this.sections.push({
+        sectionHeader: "New Section",
+        order: this.sections.length,
+        data: {},
+      });
+      this.editSectionIdx = this.sections.length - 1;
     },
-    openAddFieldModal() {
-      this.$refs["afm"].show();
+    removeSection(sectionHeader) {
+      this.sections = this.sections.filter(
+        (e) => e.sectionHeader != sectionHeader
+      );
     },
-    addToForm(event) {
-      console.log(event);
-      this.formElements.push(event);
+    editSectionHeader(idx) {
+      if (this.editSectionIdx != -1) {
+        return;
+      }
+      this.editSectionIdx = idx;
     },
-    remove(index) {
-      this.formElements.splice(index, 1);
+    saveSectionHeader() {
+      this.editSectionIdx = -1;
+      console.log(this.sections);
     },
-    printData() {
-      console.log(this.formModels);
-    }
+    viewSection(idx) {
+      console.log("Viewing Section: ", idx);
+    },
   },
 };
 </script>
