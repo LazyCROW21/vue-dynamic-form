@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
-import formSectionBuilder from '../components/form-section-builder.vue'
+import formBuilder from '../components/form-builder.vue'
 import formRender from '../components/form-render.vue'
 
 
@@ -8,7 +8,7 @@ const routes = [
     {
         path:"/",
         name:"Home",
-        component: formSectionBuilder
+        component: formBuilder
     },
     {
         path:"/render/:formTitle",

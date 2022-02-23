@@ -57,14 +57,14 @@ import inputCheckBox from "./form-elements/input-checkbox.vue";
 import inputSelect from "./form-elements/input-select.vue";
 import addFieldModal from "./add-field-modal.vue";
 import { VueDraggableNext } from "vue-draggable-next";
-import formData from '../form-data/formData'
+// import formData from '../form-data/formData'
 
 // left input-list, input-image, input-ouput mapping
 export default {
   name: "formSectionBuilder",
-  // props: {
-  //   formElements: Object
-  // },
+  props: {
+    formElements: Object
+  },
   components: {
     "input-text": inputText,
     "input-checkbox": inputCheckBox,
@@ -82,7 +82,7 @@ export default {
         gender: null,
         age: null
       },
-      formElements: null
+      // formElements: null
       // formElements: [
       //   {
       //     ordering: 1,
@@ -138,12 +138,12 @@ export default {
     },
     addToForm(event) {
       // console.log(event);
-      //this.$emit('addElement', event);
-      this.formElements.push(event);
+      this.$emit('addElement', event);
+      // this.formElements.push(event);
     },
     remove(index) {
-     // this.$emit('removeElement', index);
-      this.formElements.splice(index, 1);
+     this.$emit('removeElement', index);
+      // this.formElements.splice(index, 1);
     },
     SubmitData() {
       this.$router.push({ name: 'Render',params: {formTitle:this.sectionHeader} })
@@ -151,10 +151,10 @@ export default {
        console.log(JSON.stringify(this.formElements))
     }
   },
-  mounted () {
-    this.formElements = formData
+  // mounted () {
+  //   this.formElements = formData
    
-  }
+  // }
 };
 </script>
 
@@ -168,8 +168,8 @@ export default {
 
 .bi {
   cursor: all-scroll;
- display: flex;
-justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 </style>
 
