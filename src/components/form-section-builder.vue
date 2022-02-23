@@ -27,6 +27,8 @@
       <draggable class="dragArea list-group w-full" :list="formElements">
         <template v-for="(formElement, index) in formElements" :key="index">
           <div class="position-relative">
+            <br>
+             <i class="bi bi-grip-horizontal"></i>
             <button class="rmv-btn btn-close" @click="remove(index)"></button>
             <component
               v-bind:is="formElement.component"
@@ -43,7 +45,7 @@
       </button>
     </div>
   </div>
-  <button @click="printData">Data</button>
+  <button @click="SubmitData">Submit</button>
   <Teleport to="body">
     <add-field-modal ref="afm" @newField="addToForm" />
   </Teleport>
@@ -55,13 +57,14 @@ import inputCheckBox from "./form-elements/input-checkbox.vue";
 import inputSelect from "./form-elements/input-select.vue";
 import addFieldModal from "./add-field-modal.vue";
 import { VueDraggableNext } from "vue-draggable-next";
+import formData from '../form-data/formData'
 
 // left input-list, input-image, input-ouput mapping
 export default {
   name: "formSectionBuilder",
-  props: {
-    formElements: Object
-  },
+  // props: {
+  //   formElements: Object
+  // },
   components: {
     "input-text": inputText,
     "input-checkbox": inputCheckBox,
@@ -79,14 +82,15 @@ export default {
         gender: null,
         age: null
       },
+      formElements: null
       // formElements: [
       //   {
       //     ordering: 1,
       //     component: "input-text",
       //     key: "name",
       //     errors: [
-      //       'You are noob',
-      //       'You suck'
+      //       // 'You are noob',
+      //       // 'You suck'
       //     ],
       //     properties: {
       //       id: "inptxt",
@@ -134,17 +138,20 @@ export default {
     },
     addToForm(event) {
       // console.log(event);
-      this.$emit('addElement', event);
-      // this.formElements.push(event);
+      //this.$emit('addElement', event);
+      this.formElements.push(event);
     },
     remove(index) {
-      this.$emit('removeElement', index);
-      // this.formElements.splice(index, 1);
+     // this.$emit('removeElement', index);
+      this.formElements.splice(index, 1);
     },
-    printData() {
-      console.log(this.formModels);
+    SubmitData() {
+      this.$router.push({ path: '/render' })
     }
   },
+  mounted () {
+    this.formElements = formData
+  }
 };
 </script>
 
@@ -154,6 +161,12 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.bi {
+  cursor: all-scroll;
+ display: flex;
+justify-content: center;
 }
 </style>
 

@@ -21,7 +21,7 @@ export default {
   // default value, v-modeling & validators
   name: "inputCheckBox",
   props: {
-    modelValue: String,
+    modelValue: Boolean,
     errors: Array,
     properties: {
       id: String,
