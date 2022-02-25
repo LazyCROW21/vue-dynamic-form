@@ -1,30 +1,34 @@
 <template>
-  <div  class="row">
+  <div class="row">
     <div class="mb-3">
-      <div><h1>{{this.formTitle}}</h1></div>
-        <template v-for="(formElement, index) in formElements" :key="index">
+      <template v-for="(section, index) in sections" :key="index">
+        <hr />
+        <div>
+          <h3>{{ section.sectionHeader }}</h3>
+        </div>
+        <template
+          v-for="(formElement, index) in section.formElements"
+          :key="index"
+        >
           <div class="position-relative">
             <component
               v-bind:is="formElement.component"
               v-bind="formElement"
               v-model="formElement.model"
-             
             ></component>
           </div>
         </template>
-     <button @click="Response">submit</button>
+      </template>
+      <button @click="Response">submit</button>
     </div>
-   
-   
   </div>
-
 </template>
 
 <script>
 import inputText from "./form-elements/input-text.vue";
 import inputCheckBox from "./form-elements/input-checkbox.vue";
 import inputSelect from "./form-elements/input-select.vue";
-import formData from '../form-data/formData'
+//import formData from '../form-data/formData'
 // left input-list, input-image, input-ouput mapping
 export default {
   name: "formbuilder",
@@ -33,33 +37,31 @@ export default {
     "input-text": inputText,
     "input-checkbox": inputCheckBox,
     "input-select": inputSelect,
-    
-    
   },
   data() {
     return {
       // add ordering
-      
-     formTitle: null,
-      formElements:null
-      
+
+      sections: [],
     };
   },
   methods: {
-    Response () {
-      let response = {}
-      this.formElements.forEach(formElement => {
-        response[formElement.key] = formElement.model
-      })
-      console.log(JSON.stringify(response))
-     
-    }
+    Response() {
+      let response = {};
+      this.sections.filter((section) =>
+        section.formElements.forEach((formElement) => {
+          response[formElement.key] = formElement.model;
+          //  console.log(formElement.model)
+        })
+      );
+      console.log(response);
+    },
   },
   mounted() {
-     
-    this.formElements = formData
-    this.formTitle = this.$route.params.formTitle
-  }
+    this.sections = this.$store.state.sections;
+    console.log(this.sections);
+    //this.formTitle = this.$route.params.formTitle
+  },
 };
 </script>
 

@@ -6,7 +6,6 @@
         v-for="(section, i) in sections"
         :key="i"
         class="d-inline p-2 m-1 bg-light"
-        @click="viewSection(i)"
       >
         <template v-if="editSectionIdx === i">
           <input type="text" v-model="section.sectionHeader" />
@@ -21,13 +20,19 @@
           <span>{{ section.sectionHeader }}</span>
           <button
             class="btn btn-primary btn-sm ms-2 p-1 py-0"
+            @click="viewSection(i)"
+          >
+            <i class="bi bi-eye"></i>
+          </button>
+          <button
+            class="btn btn-primary btn-sm ms-2 p-1 py-0"
             @click="editSectionHeader(i)"
           >
             <i class="bi bi-pencil-square"></i>
           </button>
           <button
             class="btn btn-danger btn-sm ms-1 p-1 py-0"
-            @click="removeSection(section.sectionHeader)"
+            @click="removeSection(i)"
           >
             <i class="bi bi-trash"></i>
           </button>
@@ -38,10 +43,13 @@
       </button>
     </div>
     <hr />
+    <button @click="SubmitData">Submit</button>
     <!-- Section View -->
-    <div>
+    <div v-if="formElements.length > 0">
       <form-section-builder
-        :formElements="sections[seletedSelectionIndex].formElements"
+        :formElements="formElements"
+        @addElement="addElements"
+        @removeElement="removeElement"
       />
     </div>
   </div>
@@ -49,6 +57,7 @@
 
 <script>
 import formSectionBuilder from "./form-section-builder";
+//import formData from '../form-data/formData'
 
 export default {
   name: "formbuilder",
@@ -60,90 +69,92 @@ export default {
     return {
       seletedSelectionIndex: 0,
       editSectionIdx: -1,
-      sections: [
-        {
-          sectionHeader: "ABC",
-          order: 0,
-          formElements: [
-            {
-              ordering: 1,
-              component: "input-text",
-              key: "name",
-              errors: ["You are noob", "You suck"],
-              properties: {
-                id: "inptxt",
-                placeholder: "ABC XYZ",
-                label: "Enter your name",
-              },
-            },
-            {
-              ordering: 2,
-              component: "input-select",
-              key: "gender",
-              properties: {
-                id: "inpselect",
-                placeholder: "M or F",
-                label: "Select Gender",
-                options: [
-                  {
-                    value: "M",
-                    label: "Male",
-                  },
-                  {
-                    value: "F",
-                    label: "Female",
-                  },
-                ],
-              },
-            },
-            {
-              component: "input-checkbox",
-              key: "age",
-              properties: {
-                id: "inpck",
-                label: "Are you 18+",
-              },
-            },
-          ],
-        },
-        {
-          sectionHeader: "XYZ",
-          order: 1,
-          formElements: [
-            {
-              ordering: 1,
-              component: "input-text",
-              key: "name",
-              errors: ["You are noob", "You suck"],
-              properties: {
-                id: "inptxt",
-                placeholder: "ABC XYZ",
-                label: "Enter your name",
-              },
-            },
-            {
-              ordering: 2,
-              component: "input-select",
-              key: "gender",
-              properties: {
-                id: "inpselect",
-                placeholder: "M or F",
-                label: "Select Gender",
-                options: [
-                  {
-                    value: "M",
-                    label: "Male",
-                  },
-                  {
-                    value: "F",
-                    label: "Female",
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      ],
+      sections: [],
+      formElements: [],
+      // sections: [
+      //   {
+      //     sectionHeader: "ABC",
+      //     order: 0,
+      //     formElements: [
+      //       {
+      //         ordering: 1,
+      //         component: "input-text",
+      //         key: "name",
+      //         errors: ["You are noob", "You suck"],
+      //         properties: {
+      //           id: "inptxt",
+      //           placeholder: "ABC XYZ",
+      //           label: "Enter your name",
+      //         },
+      //       },
+      //       {
+      //         ordering: 2,
+      //         component: "input-select",
+      //         key: "gender",
+      //         properties: {
+      //           id: "inpselect",
+      //           placeholder: "M or F",
+      //           label: "Select Gender",
+      //           options: [
+      //             {
+      //               value: "M",
+      //               label: "Male",
+      //             },
+      //             {
+      //               value: "F",
+      //               label: "Female",
+      //             },
+      //           ],
+      //         },
+      //       },
+      //       {
+      //         component: "input-checkbox",
+      //         key: "age",
+      //         properties: {
+      //           id: "inpck",
+      //           label: "Are you 18+",
+      //         },
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     sectionHeader: "XYZ",
+      //     order: 1,
+      //     formElements: [
+      //       {
+      //         ordering: 1,
+      //         component: "input-text",
+      //         key: "name",
+      //         errors: ["You are noob", "You suck"],
+      //         properties: {
+      //           id: "inptxt",
+      //           placeholder: "ABC XYZ",
+      //           label: "Enter your name",
+      //         },
+      //       },
+      //       {
+      //         ordering: 2,
+      //         component: "input-select",
+      //         key: "gender",
+      //         properties: {
+      //           id: "inpselect",
+      //           placeholder: "M or F",
+      //           label: "Select Gender",
+      //           options: [
+      //             {
+      //               value: "M",
+      //               label: "Male",
+      //             },
+      //             {
+      //               value: "F",
+      //               label: "Female",
+      //             },
+      //           ],
+      //         },
+      //       },
+      //     ],
+      //   },
+      // ],
     };
   },
   methods: {
@@ -155,10 +166,12 @@ export default {
       });
       this.editSectionIdx = this.sections.length - 1;
     },
-    removeSection(sectionHeader) {
-      this.sections = this.sections.filter(
-        (e) => e.sectionHeader != sectionHeader
-      );
+    removeSection(index) {
+      // this.sections = this.sections.filter(
+      //   (e) => e.sectionHeader != sectionHeader
+      // );
+      this.$store.dispatch("remove_section", index);
+      this.formElements = [];
     },
     editSectionHeader(idx) {
       if (this.editSectionIdx != -1) {
@@ -172,8 +185,31 @@ export default {
     },
     viewSection(idx) {
       this.seletedSelectionIndex = idx;
-      console.log("Viewing Section: ", idx);
+      this.formElements =
+        this.sections[this.seletedSelectionIndex].formElements;
     },
+    addElements(event) {
+      console.log(event);
+      console.log(this.seletedSelectionIndex);
+      let payload = { content: event, index: this.seletedSelectionIndex };
+      this.$store.dispatch("add_element", payload);
+    },
+    removeElement(event) {
+      console.log(event);
+      let payload = {
+        element_index: event,
+        section_index: this.seletedSelectionIndex,
+      };
+      this.$store.dispatch("remove_element", payload);
+    },
+    SubmitData() {
+      this.$router.push({ path: "/render" });
+    },
+  },
+  mounted() {
+    console.log(this.$store.state.count);
+    this.sections = this.$store.state.sections;
+    console.log(this.sections);
   },
 };
 </script>

@@ -11,7 +11,7 @@ const routes = [
         component: formBuilder
     },
     {
-        path:"/render/:formTitle",
+        path:"/render",
         name:"Render",
         component: formRender
     }

@@ -45,7 +45,7 @@
       </button>
     </div>
   </div>
-  <button @click="SubmitData">Submit</button>
+  
   <Teleport to="body">
     <add-field-modal ref="afm" @newField="addToForm" />
   </Teleport>
@@ -65,6 +65,7 @@ export default {
   props: {
     formElements: Object
   },
+  emits: ["addElement","removeElement"],
   components: {
     "input-text": inputText,
     "input-checkbox": inputCheckBox,
@@ -139,7 +140,8 @@ export default {
     addToForm(event) {
       // console.log(event);
       this.$emit('addElement', event);
-      // this.formElements.push(event);
+      console.log(event)
+      //this.$store.state.sections
     },
     remove(index) {
      this.$emit('removeElement', index);

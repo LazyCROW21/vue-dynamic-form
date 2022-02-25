@@ -1,4 +1,8 @@
- let sections=[
+import {createStore} from "vuex";
+
+const store = createStore({
+    state: {
+        sections: [
         {
           sectionHeader: "ABC",
           order: 0,
@@ -51,7 +55,7 @@
             {
               ordering: 1,
               component: "input-text",
-              key: "name",
+              key: "name1",
               errors: ["You are noob", "You suck"],
               properties: {
                 id: "inptxt",
@@ -62,7 +66,7 @@
             {
               ordering: 2,
               component: "input-select",
-              key: "gender",
+              key: "gender1",
               properties: {
                 id: "inpselect",
                 placeholder: "M or F",
@@ -81,6 +85,36 @@
             },
           ],
         },
-      ]
+      ],
+        count: 3 
+    },
+    mutations: {
+        ADD_ELEMENT(state,payload) {
+            console.log(payload)
+            state.sections[payload.index].formElements.push(payload.content)
+        },
+        REMOVE_ELEMENT(state,payload) {
+            console.log(payload)
+            state.sections[payload.section_index].formElements.splice(payload.element_index,1)
+        },
+        REMOVE_SECTION(state,payload){
+            console.log(payload)
+            state.sections.splice(payload,1)
+            console.log(state.sections)
+        }
+    },
+    actions: {
+        add_element(context,payload) {
+            console.log(payload)
+            context.commit("ADD_ELEMENT",payload)
+        },
+        remove_element(context,payload){
+            context.commit("REMOVE_ELEMENT",payload)
+        },
+        remove_section(context,payload){
+            context.commit("REMOVE_SECTION",payload)
+        }
+    }
+})
 
-export default sections
+export default store
